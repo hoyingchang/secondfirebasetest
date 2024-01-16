@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1089589486347",
+    "project_id": "gwcware2ndft",
+    "storage_bucket": "gwcware2ndft.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089589486347:android:fb25f86b8937fa8dff380e",
+        "android_client_info": {
+          "package_name": "com.gwcware.secondfirebasetest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbz7inJZQ9v2NFzkcshmOY6CuXZoq0xRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
