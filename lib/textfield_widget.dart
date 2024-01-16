@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class TextfieldWidget extends StatelessWidget {
 
   final TextEditingController textEditingController;
+  final IconData iconData;
   final String labelString;
   final bool isObscure;
 
   TextfieldWidget({
     required this.textEditingController,
+    required this.iconData,
     required this.labelString,
     required this.isObscure,
 
@@ -18,7 +20,7 @@ class TextfieldWidget extends StatelessWidget {
     return TextField(
       controller: textEditingController,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.person),
+        prefixIcon: Icon(iconData),
         labelText: labelString,
         labelStyle: TextStyle(
           fontSize: 18,
