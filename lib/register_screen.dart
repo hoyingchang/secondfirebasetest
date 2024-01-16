@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secondfirebasetest/textfield_widget.dart';
 
+import 'login_screen.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -132,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               margin: const EdgeInsets.only(left: 20,right: 20),
               child: Row(
                 children: [
-                  Text(
+                  const Text(
                     "Already have an account?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -141,8 +143,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextButton(
                       onPressed:(){
                         //go to Log in page
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context)=>const LoginScreen(),),
+                        );
                       },
-                      child:Text(
+                      child:const Text(
                           "Go Login",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
