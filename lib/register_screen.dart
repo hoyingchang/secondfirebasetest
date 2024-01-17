@@ -120,24 +120,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
             Container(
               width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(left: 20,right: 20),
+              margin: const EdgeInsets.only(left: 20,right: 20),
               child: ElevatedButton(
                 onPressed: () async{
 
                   //Sign up to Firebase Authentication
                   try {
+                    //to create a new account
                     final credential = await firebaseAuth.createUserWithEmailAndPassword(
                       email: emailTextEditingController.text.toString().trim(),
                       password: passwordTextEditingController.text.toString().trim(),
                     );
 
+                    //sign up and log in success and then go to HomeScreen
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
+
+
+                    //to check if sign up and log in success
                     firebaseAuth.authStateChanges()
                         .listen((User? user) {
                       if (user != null) {
                         print(user.uid);
-                      }
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
-                    });
+                      }}
+                    );
+
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       print('The password provided is too weak.');

@@ -21,17 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //
-  //   if (firebaseAuth.currentUser != null) {
-  //     print(firebaseAuth.currentUser?.uid);
-  //
-  //     Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
         
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
         
               Container(
                 width: MediaQuery.of(context).size.width * 0.6,
@@ -59,15 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Image.asset("images/clef.jpeg"),
               ),
         
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
         
-              Container(
-                child: Text(
-                  "SHOW OFF YOURSELF",
-                  style: GoogleFonts.akronim(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
-                  ),
+              Text(
+                "SHOW OFF YOURSELF",
+                style: GoogleFonts.akronim(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
                 ),
               ),
         
@@ -81,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
         
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
         
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -95,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         isObscure: false,
                     ),
         
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
         
                     TextfieldWidget(
                         textEditingController: passwordTextEditingController,
@@ -104,31 +91,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         isObscure: true,
                     ),
         
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                   ],
                 ),
               ),
         
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(left: 20,right: 20),
+                margin: const EdgeInsets.only(left: 20,right: 20),
                 child: ElevatedButton(
                   onPressed: ()async{
                     //Login
                     try {
+                      //user log in
                       final credential = await firebaseAuth.signInWithEmailAndPassword(
                           email: emailTextEditingController.text.toString().trim(),
                           password: passwordTextEditingController.text.toString().trim(),
                       );
 
+                      //log in success and go to HomeScreen
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
 
+                      //to check if log in success
                       firebaseAuth.authStateChanges()
                           .listen((User? user) {
                         if (user != null) {
                           print(user.uid);
-                        }
-                      });
+                        }}
+                      );
 
 
                     } on FirebaseAuthException catch (e) {
@@ -139,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(
                       fontSize: 18,
@@ -151,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
         
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(left: 20,right: 20),
+                margin: const EdgeInsets.only(left: 20,right: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -167,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           //change to Register page
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterScreen(),),);
                         } ,
-                        child: Text(
+                        child: const Text(
                           "Singup right away",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
