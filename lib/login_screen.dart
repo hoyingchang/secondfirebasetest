@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +22,31 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordTextEditingController = TextEditingController();
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  checkUserAlreadyLogin()
+  {
+    //if user already log in, go to Home Screen directly
+    if (firebaseAuth.currentUser != null) {
+      print(firebaseAuth.currentUser?.uid);
+
+      Timer(const Duration(seconds:1),()async
+      {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
+
+      });
+    }
+
+
+  }
+
+  @override
+  void initState() {
+    // run checkUserAlreadyLogin first when start
+    checkUserAlreadyLogin();
+    super.initState();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
