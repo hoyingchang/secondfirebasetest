@@ -129,6 +129,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       email: emailTextEditingController.text.toString().trim(),
                       password: passwordTextEditingController.text.toString().trim(),
                     );
+
+                    firebaseAuth.authStateChanges()
+                        .listen((User? user) {
+                      if (user != null) {
+                        print(user.uid);
+                      }
+                    });
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       print('The password provided is too weak.');

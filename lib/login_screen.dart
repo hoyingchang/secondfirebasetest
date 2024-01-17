@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secondfirebasetest/register_screen.dart';
@@ -15,6 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +100,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(left: 20,right: 20),
                 child: ElevatedButton(
-                  onPressed: (){
+                  onPressed: ()async{
                     //Login
+                    try {
+                      final credential = await firebaseAuth.signInWithEmailAndPassword(
+                          email: emailTextEditingController.text.toString().trim(),
+                          password: passwordTextEditingController.text.toString().trim(),
+                      );
+
+                      firebaseAuth.authStateChanges()
+                          .listen((User? user) {
+                        if (user != null) {
+                          print(user.uid);
+                        }
+                      });
+
+
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        print('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                        print('Wrong password provided for that user.');
+                      }
+                    }
                   },
                   child: Text(
                     "Login",
