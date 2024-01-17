@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:secondfirebasetest/home_screen.dart';
 import 'package:secondfirebasetest/textfield_widget.dart';
 
 import 'login_screen.dart';
@@ -135,6 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       if (user != null) {
                         print(user.uid);
                       }
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
                     });
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {

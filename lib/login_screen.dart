@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:secondfirebasetest/register_screen.dart';
 import 'package:secondfirebasetest/textfield_widget.dart';
 
+import 'home_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +20,17 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordTextEditingController = TextEditingController();
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   if (firebaseAuth.currentUser != null) {
+  //     print(firebaseAuth.currentUser?.uid);
+  //
+  //     Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           email: emailTextEditingController.text.toString().trim(),
                           password: passwordTextEditingController.text.toString().trim(),
                       );
+
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
 
                       firebaseAuth.authStateChanges()
                           .listen((User? user) {
