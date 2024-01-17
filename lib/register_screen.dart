@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secondfirebasetest/textfield_widget.dart';
@@ -16,6 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController userNameTextEditingController = TextEditingController();
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 
 
@@ -118,9 +121,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.only(left: 20,right: 20),
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: () async{
 
                   //Sign up to Firebase Authentication
+                  try {
+                    final credential = await firebaseAuth.createUserWithEmailAndPassword(
+                      email: emailTextEditingController.text.toString().trim(),
+                      password: passwordTextEditingController.text.toString().trim(),
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'weak-password') {
+                      print('The password provided is too weak.');
+                    } else if (e.code == 'email-already-in-use') {
+                      print('The account already exists for that email.');
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
 
                 },
                 child: const Text(
