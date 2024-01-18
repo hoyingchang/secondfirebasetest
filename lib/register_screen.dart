@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:secondfirebasetest/home_screen.dart';
 import 'package:secondfirebasetest/textfield_widget.dart';
 
@@ -22,6 +25,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+  final ImagePicker picker = ImagePicker();
+  XFile? image;
 
 
 
@@ -67,18 +73,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
             //user's avatar
             GestureDetector(
-              onTap: (){
+              onTap: ()async{
                 //user pick picture
+                // Pick an image.
+                image = await picker.pickImage(source: ImageSource.gallery);
+                // Capture a photo.
+                // photo = await picker.pickImage(source: ImageSource.camera);
+                // refresh image
+                setState(() {
+                  image;
+                });
+
+
               },
 
-              child: const CircleAvatar(
-                radius: 80,
-                backgroundImage: AssetImage(
-                  "images/avatar.jpeg",
-                ),
+              child: CircleAvatar(
+                radius: MediaQuery.of(context).size.width * 0.2,
+                backgroundImage: image == null
+                  ? const AssetImage("images/avatar.jpeg") as ImageProvider
+                  : FileImage(File(image!.path)),
+
+
+
+                child: image == null
+                  ? Icon(
+                  Icons.add_photo_alternate,
+                  size: MediaQuery.of(context).size.width * 0.1,
+                  color: Colors.white,
+                  )
+                  : null,
               ),
 
             ),
+
+
+
 
             const SizedBox(height: 10,),
 
