@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:secondfirebasetest/home_screen.dart';
 import 'package:secondfirebasetest/textfield_widget.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'login_screen.dart';
 
@@ -25,6 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+  String downloadImageUrl = "";
 
   final ImagePicker picker = ImagePicker();
   XFile? image;
@@ -83,18 +86,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 setState(() {
                   image;
                 });
-
-
               },
 
+              //put image to avatar
               child: CircleAvatar(
                 radius: MediaQuery.of(context).size.width * 0.2,
                 backgroundImage: image == null
                   ? const AssetImage("images/avatar.jpeg") as ImageProvider
                   : FileImage(File(image!.path)),
-
-
-
                 child: image == null
                   ? Icon(
                   Icons.add_photo_alternate,
@@ -175,14 +174,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       "email": emailTextEditingController.text.toString().trim(),
                     });
 
+                    //upload image to firebase storage
+                    //create image filename first, use time to be the file name to avoid conflict
+                    String userImageFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
+                    //image file name reference
+                    Reference storageRef = firebaseStorage
+                        .ref()
+                        .child("usersImages").child("$userImageFileName.jpg");
 
+                    //connect filename and image
+                    UploadTask uploadImageTask = storageRef.putFile(File(image!.path));
+
+                    //get snapshot of position of image
+                    //TaskSnapshot imagePositionSnapshot = await uploadImageTask.whenComplete((){});
+
+                    //to get the url via image position snapshot and give to global downloadImageUrl valuable
+                    // await imagePositionSnapshot
+                    //     .ref
+                    //     .getDownloadURL()
+                    //     .then((imageUrl){
+                    //   downloadImageUrl = imageUrl;
+                    // });
 
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       print('The password provided is too weak.');
                     } else if (e.code == 'email-already-in-use') {
-                      //print('The account already exists for that email.');
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text(
