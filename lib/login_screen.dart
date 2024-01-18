@@ -185,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterScreen(),),);
                         } ,
                         child: const Text(
-                          "Singup right away",
+                          "Sign up right away",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,

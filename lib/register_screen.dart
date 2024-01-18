@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +21,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordTextEditingController = TextEditingController();
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
 
 
 
@@ -136,19 +139,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
 
 
-                    //to check if sign up and log in success
-                    firebaseAuth.authStateChanges()
-                        .listen((User? user) {
-                      if (user != null) {
-                        print(user.uid);
-                      }}
-                    );
+                    //add a new user to firestore
+                    CollectionReference user = firebaseFirestore.collection("users");
+                    user.add({
+                      "username":userNameTextEditingController.text.toString().trim(),
+                      "email": emailTextEditingController.text.toString().trim(),
+                    });
+
+
+
 
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       print('The password provided is too weak.');
                     } else if (e.code == 'email-already-in-use') {
-                      print('The account already exists for that email.');
+                      //print('The account already exists for that email.');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                              "The account already exists for that email.",
+                            ),),
+                      );
                     }
                   } catch (e) {
                     print(e);
