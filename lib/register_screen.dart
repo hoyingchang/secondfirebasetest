@@ -80,8 +80,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 //user pick picture
                 // Pick an image.
                 image = await picker.pickImage(source: ImageSource.gallery);
+
                 // Capture a photo.
                 // photo = await picker.pickImage(source: ImageSource.camera);
+
                 // refresh image
                 setState(() {
                   image;
@@ -104,8 +106,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
 
             ),
-
-
 
 
             const SizedBox(height: 10,),
@@ -157,14 +157,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   //Sign up to Firebase Authentication
                   try {
-                    //to create a new account
+                    //to create a new account to Authentication
                     final credential = await firebaseAuth.createUserWithEmailAndPassword(
                       email: emailTextEditingController.text.toString().trim(),
                       password: passwordTextEditingController.text.toString().trim(),
                     );
+                    print(credential.user?.uid);
 
                     //sign up and log in success and then go to HomeScreen
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()),);
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomeScreen()),);
 
 
                     //add a new user to firestore
@@ -187,21 +188,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     UploadTask uploadImageTask = storageRef.putFile(File(image!.path));
 
                     //get snapshot of position of image
-                    //TaskSnapshot imagePositionSnapshot = await uploadImageTask.whenComplete((){});
+                    TaskSnapshot imagePositionSnapshot = await uploadImageTask.whenComplete((){});
 
                     //to get the url via image position snapshot and give to global downloadImageUrl valuable
-                    // await imagePositionSnapshot
-                    //     .ref
-                    //     .getDownloadURL()
-                    //     .then((imageUrl){
-                    //   downloadImageUrl = imageUrl;
-                    // });
+                    await imagePositionSnapshot
+                        .ref
+                        .getDownloadURL()
+                        .then((imageUrl){
+                      downloadImageUrl = imageUrl;
+                    });
 
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
-                      print('The password provided is too weak.');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            "The password provided is too weak.",
+                          ),),
+                      );
                     } else if (e.code == 'email-already-in-use') {
-
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text(
@@ -210,10 +215,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       );
                     }
                   } catch (e) {
-                    print(e);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          e.toString(),
+                        ),),
+                    );
                   }
-
-                },
+                  },
                 child: const Text(
                     "Sign Up",
                 ),
@@ -252,7 +261,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
-
     );
   }
 }
